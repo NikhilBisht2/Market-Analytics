@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hyzen Login_Page</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #3399ff;
+        }
+
+        .ripple-background {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            animation: ripple 15s infinite;
+            box-shadow: 0px 0px 1px 0px #508fb9;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .small {
+            width: 200px;
+            height: 200px;
+        }
+
+        .medium {
+            width: 400px;
+            height: 400px;
+        }
+
+        .large {
+            width: 600px;
+            height: 600px;
+        }
+
+        .xlarge {
+            width: 800px;
+            height: 800px;
+        }
+
+        .xxlarge {
+            width: 1000px;
+            height: 1000px;
+        }
+
+        .shade1 {
+            opacity: 0.2;
+        }
+        .shade2 {
+            opacity: 0.5;
+        }
+        .shade3 {
+            opacity: 0.7;
+        }
+        .shade4 {
+            opacity: 0.8;
+        }
+        .shade5 {
+            opacity: 0.9;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+        }
+
+        .container {
+            width: 350px;
+            padding: 30px;
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            margin-bottom: 20px;
+            background: transparent;
+        }
+
+        .logo img {
+            max-width: 400px;
+            height: auto;
+            display: block;
+            background: transparent;
+        }
+
+        .input_area {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .username,
+        .password {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .username input,
+        .password input {
+            background: none;
+            border: none;
+            outline: none;
+            width: 100%;
+            color: black;
+            font-size: 16px;
+            padding: 0;
+        }
+
+        .buttons {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .register,
+        .login {
+            flex: 1;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .register {
+            background: black;
+        }
+
+        .login {
+            background: black;
+        }
+
+        .register:hover {
+            background: gray;
+        }
+
+        .login:hover {
+            background: gray;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="ripple-background">
+        <div class="circle xxlarge shade1"></div>
+        <div class="circle xlarge shade2"></div>
+        <div class="circle large shade3"></div>
+        <div class="circle medium shade4"></div>
+        <div class="circle small shade5"></div>
+    </div>
+
+    <div class="logo">
+        <img src="imgs/Logo.png" alt="Hyzen Logo">
+    </div>
+
+    <div class="container">
+        <div class="input_area">
+            <div class="username">
+                <input type="text" placeholder="Username" id="username">
+            </div>
+            <div class="password">
+                <input type="password" placeholder="Password" id="password">
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="register" onclick="register()">Register</button>
+            <button class="login" onclick="login()">Login</button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
