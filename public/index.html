@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<head>
+    <title>
+        Hyzen
+    </title>
+</head>
+<body>
+    Welcome to Hyzen
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login.html'; // or wherever your login page is
+        }
+    </script>
+</body>
