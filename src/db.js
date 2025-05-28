@@ -1,6 +1,6 @@
 import { DatabaseSync } from 'node:sqlite';
 
-const db = new DatabaseSync(':memory:');
+const db = new DatabaseSync('./src/my_app.db');
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (

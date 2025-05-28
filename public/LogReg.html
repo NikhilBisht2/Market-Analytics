@@ -25,14 +25,21 @@
         }
 
         body {
-            background: #3399ff;
+            background: #6672ff;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
         }
 
         .ripple-background {
             height: 100%;
             width: 100%;
-            position: relative;
+            position: absolute; 
+            top: 0;
+            left: 0;
             overflow: hidden;
+            z-index: -1; 
         }
 
         .circle {
@@ -99,30 +106,9 @@
             }
         }
 
-        .container {
-            width: 350px;
-            padding: 30px;
-            position: absolute;
-            top: 55%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
         .logo {
-            position: absolute;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             z-index: 10;
-            margin-bottom: 20px;
+            margin-bottom: 30px; 
             background: transparent;
         }
 
@@ -131,6 +117,19 @@
             height: auto;
             display: block;
             background: transparent;
+        }
+
+        .container {
+            width: 350px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
         }
 
         .input_area {
@@ -167,11 +166,11 @@
         .buttons {
             width: 100%;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             margin-top: 10px;
         }
 
-        .auth-button {
+        .reg-button {
             flex: 1;
             padding: 10px 20px;
             border: none;
@@ -181,11 +180,33 @@
             color: white;
             background: black;
             transition: background-color 0.3s ease;
-            max-width: 200px;
+            max-width: 150px;
         }
 
-        .auth-button:hover {
+        .reg-button:hover {
             background: gray;
+        }
+
+        .log-button {
+            flex: 1;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+            background: black;
+            transition: background-color 0.3s ease;
+            max-width: 150px;
+        }
+
+        .log-button:hover {
+            background: gray;
+        }
+
+        .alert-box {
+            width: 150px;
+            padding: 0px;
         }
 
     </style>
@@ -213,7 +234,11 @@
             </div>
         </div>
         <div class="buttons">
-            <button class="auth-button" id="authButton" onclick="handleAuth()">Register/Login</button>
+            <button class="log-button" id="regButton" onclick="regAuth()">Register</button>
+            <button class="reg-button" id="logButton" onclick="logAuth()">Login</button>
+        </div>
+        <div class="alert-box" id="alert">
+
         </div>
     </div>
     <script src="authScripts.js"></script>

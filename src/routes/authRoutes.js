@@ -7,22 +7,19 @@ dotenv.config();
 
 
 const router = express.Router();
-const SECRET_KEY = 'your_jwt_secret'; // use env var in production
+const SECRET_KEY = 'your_jwt_secret'; 
 
 // Register route
 router.post('/register', (req, res) => {
   const { username, password } = req.body;
 
-  // Check if user exists
   const checkUser = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
   if (checkUser) {
     return res.status(400).json({ message: 'User already exists' });
   }
 
-  // Hash password
   const hashedPassword = bcrypt.hashSync(password, 10);
 
-  // Insert user
   const stmt = db.prepare('INSERT INTO users (username, password) VALUES (?, ?)');
   stmt.run(username, hashedPassword);
 
