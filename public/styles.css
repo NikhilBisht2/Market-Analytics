@@ -64,7 +64,6 @@ ul {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-
 .navbar {
   background-color: var(--primary-blue);
   padding: 15px 0;
@@ -80,45 +79,30 @@ ul {
 }
 
 .logo {
-  width: 100px;
+  width: 80px;
   display: block;
   justify-self: center;
   grid-column: 2 / 3;
 }
 
-.search-bar {
-  display: flex;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  padding: 5px 15px;
-  justify-self: end;
+.profile-logo {
   grid-column: 3 / 4;
+  justify-self: end;
 }
 
-.search-input {
+.profile-button {
   background: none;
   border: none;
-  outline: none;
-  color: white;
-  padding: 5px 0;
-  font-size: 16px;
-  width: 180px;
-}
-
-.search-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.search-button {
-  background: none;
-  border: none;
-  color: white;
   cursor: pointer;
-  font-size: 16px;
-  margin-left: 10px;
+  padding: 0;
 }
 
+.profile-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 
 .content-area {
   padding-top: 40px;
@@ -137,13 +121,6 @@ ul {
   font-weight: 700;
   margin-bottom: 0;
 }
-
-.last-updated {
-  font-size: 14px;
-  color: var(--text-medium);
-  margin-left: auto;
-}
-
 
 .market-indices {
   display: grid;
@@ -191,7 +168,6 @@ ul {
   color: var(--text-light);
   margin-left: 5px;
 }
-
 
 .stock-details-section .card {
   margin-bottom: 40px;
@@ -325,7 +301,6 @@ ul {
   color: var(--text-dark);
 }
 
-
 .your-stock-section h2 {
   font-size: 24px;
   font-weight: 700;
@@ -399,7 +374,6 @@ ul {
   font-weight: 600;
 }
 
-
 footer {
   background-color: var(
     --dark-blue
@@ -449,7 +423,6 @@ footer {
   color: white;
 }
 
-
 @media (max-width: 992px) {
   .navbar-content {
     flex-direction: column;
@@ -495,9 +468,6 @@ footer {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-  }
-  .last-updated {
-    margin-left: 0;
   }
   .stock-day-summary {
     grid-template-columns: 1fr;

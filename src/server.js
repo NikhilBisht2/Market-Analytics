@@ -2,7 +2,7 @@ import express from 'express';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js'
-import pullData from './routes/mrkt.js';
+import pullData from './routes/mrktRoutes.js';
 import dotenv from 'dotenv';
 dotenv.config(); 
 
@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, '../public'), { index: false }));
 
 // ROUTES
 app.use('/auth', authRoutes);
-app.use('/todos', pullData);
+app.use('/mrkt', pullData);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'LogReg.html'));
