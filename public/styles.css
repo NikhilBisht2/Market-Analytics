@@ -8,10 +8,8 @@
   --text-medium: #666666;
   --text-light: #aaaaaa;
   --border-light: #e0e0e0;
-
   --positive-green: #2ecc71;
   --negative-red: #e74c3c;
-
   --technology-tag-bg: #d4f7dc;
   --technology-tag-text: #2ecc71;
   --entertainment-tag-bg: #e6d4f7;
@@ -71,8 +69,8 @@ ul {
 }
 
 .navbar-content {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   padding-right: 20px;
@@ -81,13 +79,7 @@ ul {
 .logo {
   width: 80px;
   display: block;
-  justify-self: center;
-  grid-column: 2 / 3;
-}
-
-.profile-logo {
-  grid-column: 3 / 4;
-  justify-self: end;
+  padding-left: 20px;
 }
 
 .profile-button {
@@ -375,9 +367,7 @@ ul {
 }
 
 footer {
-  background-color: var(
-    --dark-blue
-  );
+  background-color: var(--dark-blue);
   color: white;
   padding: 60px 0 20px;
 }
@@ -431,12 +421,11 @@ footer {
   .logo {
     margin-bottom: 10px;
   }
-  .search-bar {
+  .stock-search {
+    grid-column: 1 / 4;
+    justify-self: center;
     width: 100%;
-    justify-content: center;
-  }
-  .search-input {
-    width: 100%;
+    max-width: 300px;
   }
 
   .market-indices {
@@ -487,7 +476,67 @@ footer {
   .logo {
     width: 80px;
   }
-  .search-input {
-    width: 150px;
+  .search {
+    width: 100%;
+  }
+}
+
+/* Add to styles.css */
+
+.search {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 25px;
+  padding: 8px 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px; /* Adjust as needed */
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  flex-grow: 1;
+  padding: 5px 10px;
+  font-size: 16px;
+  color: var(--text-dark);
+}
+
+.search-input::placeholder {
+  color: var(--text-light);
+}
+
+.search-button {
+  background: none;
+  border: none;
+  color: var(--primary-blue);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-button:hover {
+  color: var(--dark-blue);
+}
+
+/* Adjustments for responsiveness if needed */
+@media (max-width: 992px) {
+  .stock-search {
+    width: 100%;
+    display: flex; /* Ensure it centers correctly */
+    justify-content: center;
+  }
+  .search {
+    width: 80%; /* Adjust width for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .search {
+    width: 95%; /* Further adjust width for very small screens */
   }
 }
