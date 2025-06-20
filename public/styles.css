@@ -66,6 +66,8 @@ ul {
   background-color: var(--primary-blue);
   padding: 15px 0;
   color: white;
+  position: relative;
+  z-index: 1050;
 }
 
 .navbar-content {
@@ -481,8 +483,6 @@ footer {
   }
 }
 
-/* Add to styles.css */
-
 .search {
   display: flex;
   align-items: center;
@@ -491,7 +491,7 @@ footer {
   padding: 8px 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px; /* Adjust as needed */
+  max-width: 400px;
 }
 
 .search-input {
@@ -523,20 +523,67 @@ footer {
   color: var(--dark-blue);
 }
 
-/* Adjustments for responsiveness if needed */
 @media (max-width: 992px) {
   .stock-search {
     width: 100%;
-    display: flex; /* Ensure it centers correctly */
+    display: flex;
     justify-content: center;
   }
   .search {
-    width: 80%; /* Adjust width for smaller screens */
+    width: 80%;
   }
 }
 
 @media (max-width: 480px) {
   .search {
-    width: 95%; /* Further adjust width for very small screens */
+    width: 95%;
   }
+}
+
+.stock-search {
+  position: relative;
+  z-index: 1060;
+}
+
+.result-list {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1070;
+  min-height: 0;
+}
+
+.search-result {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  color: var(--text-dark);
+  background-color: var(--card-bg);
+}
+
+.search-result:last-child {
+  border-bottom: none;
+}
+
+.search-result:hover {
+  background-color: #efefef;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 25px;
+  padding: 8px 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
 }
