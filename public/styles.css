@@ -81,14 +81,14 @@ ul {
 .logo {
   width: 80px;
   display: block;
-  padding-left: 20px;
+  padding-left: 24px;
 }
 
 .profile-button {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding-right: 10px;
 }
 
 .profile-img {
@@ -586,4 +586,44 @@ footer {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+}
+
+.logout-button {
+  position: absolute;
+  top: 68px;
+  right: 12px;
+  z-index: 1000;
+}
+
+.logout-btn {
+  padding: 8px 12px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-dropdown {
+  background: white;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.username-label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #333;
+}
+
+.logout-btn {
+  padding: 6px 12px;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }

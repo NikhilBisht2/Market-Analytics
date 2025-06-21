@@ -3,11 +3,10 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import db from '../db.js';
 import dotenv from 'dotenv';
-dotenv.config(); 
-
+dotenv.config();
 
 const router = express.Router();
-const SECRET_KEY = 'your_jwt_secret'; 
+const SECRET_KEY = process.env.JWT_SECRET;
 
 // Register route
 router.post('/register', (req, res) => {
@@ -19,7 +18,6 @@ router.post('/register', (req, res) => {
   }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
-
   const stmt = db.prepare('INSERT INTO users (username, password) VALUES (?, ?)');
   stmt.run(username, hashedPassword);
 
@@ -40,8 +38,14 @@ router.post('/login', (req, res) => {
     return res.status(401).json({ message: 'Invalid credentials' });
   }
 
-  const token = jwt.sign({ id: user.id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+  const token = jwt.sign(
+    { id: user.id, username: user.username },
+    SECRET_KEY,
+    { expiresIn: '1h' }
+  );
+
   return res.json({ message: 'Login successful', token });
 });
 
 export default router;
+
