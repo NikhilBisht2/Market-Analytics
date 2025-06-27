@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('search-box');
   const resultsList = document.getElementById('results-list');
+  const logoutDiv = document.getElementById("logout");
 
   const fetchData = (value) => {
     fetch(`/mrkt/search?q=${encodeURIComponent(value)}`, {
@@ -10,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
       .then((response) => response.json())
       .then((results) => {
-        console.log("Search results:", results);
         displayResults(results);
       })
       .catch((error) => {
@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`You selected ${result.symbol}`);
         searchInput.value = result.symbol;
         resultsList.innerHTML = '';
-        // TODO: Add this stock to the user's stock list via POST request
       });
       resultsList.appendChild(searchResultDiv);
     });
@@ -43,12 +42,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Hide dropdown when clicking outside
   document.addEventListener('click', (e) => {
-    if (!document.querySelector('.search-container').contains(e.target)) {
+    const isClickInsideSearch = document.querySelector('.search-container')?.contains(e.target);
+    const isClickInsideProfile = document.querySelector('.profile-logo')?.contains(e.target);
+
+    if (!isClickInsideSearch) {
       resultsList.innerHTML = '';
+    }
+
+    if (!isClickInsideProfile) {
+      logoutDiv.innerHTML = '';
     }
   });
 });
+
+function profile() {
+  const logoutDiv = document.getElementById("logout");
+
+  if (logoutDiv.innerHTML !== "") {
+    logoutDiv.innerHTML = "";
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+  let username = "User";
+
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      username = payload.username || "User";
+    } catch (err) {
+      console.error("Failed to decode token:", err);
+    }
+  }
+
+  logoutDiv.innerHTML = `
+    <div class="logout-dropdown">
+      <p class="username-label">Hi, ${username}</p>
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+  `;
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "/LogReg.html";
+}
 
 
