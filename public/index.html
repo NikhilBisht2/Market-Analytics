@@ -18,13 +18,21 @@
     <header class="navbar">
       <div class="navbar-content">
         <img src="imgs/HLogo.png" class="logo" alt="MarketPulse Logo" />
-        <div class="stock-search">
-          <div class="search">
-            <input type="text" placeholder="Search stocks..." class="search-input" id="search-box" />
-            <button class="search-button"><i class="fas fa-search"></i></button>
-          </div>
-          <div class="result-list" id="result-list"></div>
+        <div class="search-container stock-search">
+        <div class="search">
+          <input
+            type="text"
+            id="search-box"
+            class="search-input"
+            placeholder="Search stocks..."
+            autocomplete="off"
+          />
+          <button class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
         </div>
+        <div id="results-list" class="result-list"></div>
+      </div>
         <div class="profile-logo">
           <button class="profile-button"><img class="profile-img" src="imgs/profileLogo.png"
             onclick="profile()"></button>

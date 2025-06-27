@@ -1,87 +1,54 @@
- document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('search-box');
-    const resultsList = document.getElementById('result-list');
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('search-box');
+  const resultsList = document.getElementById('results-list');
 
-    const fetchData = (value) => {
-        fetch("https://jsonplaceholder.typicode.com/users")
-            .then((response) => response.json())
-            .then((json) => {
-                const results = json.filter((user) => {
-                    return (
-                        value &&
-                        user &&
-                        user.name &&
-                        user.name.toLowerCase().includes(value.toLowerCase())
-                    );
-                });
-                displayResults(results);
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
-    };
+  const fetchData = (value) => {
+    fetch(`/mrkt/search?q=${encodeURIComponent(value)}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((results) => {
+        console.log("Search results:", results);
+        displayResults(results);
+      })
+      .catch((error) => {
+        console.error('Search error:', error);
+      });
+  };
 
-    const displayResults = (results) => {
-        resultsList.innerHTML = ''; 
-
-        if (results.length === 0 && searchInput.value !== "") {
-            const noResultsDiv = document.createElement('div');
-            noResultsDiv.textContent = 'No results found.';
-            noResultsDiv.classList.add('search-result'); 
-            noResultsDiv.style.cursor = 'default';
-            resultsList.appendChild(noResultsDiv);
-            return;
-        } else if (searchInput.value === "") {
-            return;
-        }
-
-        results.forEach((result) => {
-            const searchResultDiv = document.createElement('div');
-            searchResultDiv.classList.add('search-result'); 
-            searchResultDiv.textContent = result.name;
-            searchResultDiv.addEventListener('click', () => {
-                alert(`You selected ${result.name}!`);
-            });
-            resultsList.appendChild(searchResultDiv);
-        });
-    };
-    searchInput.addEventListener('input', (e) => {
-        const value = e.target.value;
-        fetchData(value);
+  const displayResults = (results) => {
+    resultsList.innerHTML = '';
+    results.forEach((result) => {
+      const searchResultDiv = document.createElement('div');
+      searchResultDiv.classList.add('search-result');
+      searchResultDiv.textContent = `${result.symbol} - ${result.name}`;
+      searchResultDiv.addEventListener('click', () => {
+        alert(`You selected ${result.symbol}`);
+        searchInput.value = result.symbol;
+        resultsList.innerHTML = '';
+        // TODO: Add this stock to the user's stock list via POST request
+      });
+      resultsList.appendChild(searchResultDiv);
     });
+  };
+
+  searchInput.addEventListener('input', () => {
+    const inputValue = searchInput.value.trim();
+    if (inputValue.length > 1) {
+      fetchData(inputValue);
+    } else {
+      resultsList.innerHTML = '';
+    }
+  });
+
+  // Optional: Hide dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!document.querySelector('.search-container').contains(e.target)) {
+      resultsList.innerHTML = '';
+    }
+  });
 });
 
-function profile() {
-  const logoutDiv = document.getElementById("logout");
-
-  if (logoutDiv.innerHTML !== "") {
-    logoutDiv.innerHTML = ""; 
-    return;
-  }
-
-  const token = localStorage.getItem("token");
-  let username = "User";
-
-  if (token) {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      username = payload.username || "User";
-    } catch (err) {
-      console.error("Failed to decode token:", err);
-    }
-  }
-
-  logoutDiv.innerHTML = `
-    <div class="logout-dropdown">
-      <p class="username-label">Hi, ${username}</p>
-      <button onclick="logout()" class="logout-btn">Logout</button>
-    </div>
-  `;
-}
-
-
-function logout() {
-  localStorage.removeItem("token");
-  window.location.href = "/LogReg.html"; 
-}
 
