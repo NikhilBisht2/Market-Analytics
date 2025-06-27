@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Optional: Hide dropdown when clicking outside
+  // Hide dropdown when clicking outside
   document.addEventListener('click', (e) => {
     if (!document.querySelector('.search-container').contains(e.target)) {
       resultsList.innerHTML = '';
