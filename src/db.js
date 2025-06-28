@@ -12,10 +12,11 @@ db.exec(`
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS user_stocks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    stock_symbol TEXT NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES users(id)
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  stock_symbol TEXT NOT NULL,
+  UNIQUE(user_id, stock_symbol),
+  FOREIGN KEY (user_id) REFERENCES users(id)
   );
 `);
 

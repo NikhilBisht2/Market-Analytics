@@ -43,94 +43,11 @@
 
     <main class="container content-area">
       <section class="section-header">
-        <h1>Market Overview</h1>
+        <h1>Top News Today</h1>
       </section>
-
       <section class="market-indices">
-        <div class="card index-card sp500">
-          <h2>SENSEX</h2>
-          <p class="value">4,185.82</p>
-          <p class="change positive">
-            +23.42 (+0.56%) <span class="today-label">Today</span>
-          </p>
-        </div>
-        <div class="card index-card dowjones">
-          <h2>NIFTY 50</h2>
-          <p class="value">33,826.14</p>
-          <p class="change negative">
-            -118.35 (-0.35%) <span class="today-label">Today</span>
-          </p>
-        </div>
-        <div class="card index-card nasdaq">
-          <h2>NASDAQ</h2>
-          <p class="value">13,752.24</p>
-          <p class="change positive">
-            +87.61 (+0.64%) <span class="today-label">Today</span>
-          </p>
-        </div>
+        <div class="news-today" id="news-today">News Here</div>
       </section>
-
-      <section class="stock-details-section">
-        <div class="card stock-details-card">
-          <div class="stock-header">
-            <div class="stock-info">
-              <span class="stock-ticker">AAPL</span>
-              <span class="stock-name">Apple Inc.</span>
-            </div>
-            <div class="stock-price">
-              <p class="current-price">$174.82</p>
-              <p class="price-change positive">+2.14 (+1.24%)</p>
-            </div>
-          </div>
-          <div class="time-filters">
-            <button class="filter-btn active">1D</button>
-            <button class="filter-btn">1W</button>
-            <button class="filter-btn">1M</button>
-            <button class="filter-btn">3M</button>
-            <button class="filter-btn">1Y</button>
-            <button class="filter-btn">5Y</button>
-          </div>
-          <div class="chart-container">
-            <img
-              src="https://via.placeholder.com/600x250/F8F8FB/3D405B?text=AAPL+Chart+Placeholder"
-              alt="AAPL Stock Chart"
-              class="stock-chart-placeholder"
-            />
-            <div class="chart-labels">
-              <span>9:30</span>
-              <span>10:00</span>
-              <span>10:30</span>
-              <span>11:00</span>
-              <span>11:30</span>
-              <span>12:00</span>
-              <span>12:30</span>
-              <span>13:00</span>
-              <span>13:30</span>
-              <span>14:00</span>
-              <span>14:30</span>
-            </div>
-          </div>
-          <div class="stock-day-summary">
-            <div class="summary-item">
-              <span class="label">Open</span>
-              <span class="value">$172.68</span>
-            </div>
-            <div class="summary-item">
-              <span class="label">High</span>
-              <span class="value">$175.10</span>
-            </div>
-            <div class="summary-item">
-              <span class="label">Low</span>
-              <span class="value">$172.31</span>
-            </div>
-            <div class="summary-item">
-              <span class="label">Volume</span>
-              <span class="value">52.3M</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="your-stock-section">
         <h2>Your Stocks</h2>
         <div class="movers-grid">

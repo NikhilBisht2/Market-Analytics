@@ -3,6 +3,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultsList = document.getElementById('results-list');
   const logoutDiv = document.getElementById("logout");
 
+  // fetch news
+  fetch('/mrkt/news')
+  .then((res) => res.json())
+  .then((newsItems) => {
+    const newsContainer = document.getElementById('news-today');
+    newsContainer.innerHTML = ''; // clear default text
+
+    newsItems.forEach((item) => {
+      const div = document.createElement('div');
+      div.className = 'news-card';
+      div.innerHTML = `
+        <h4>${item.headline}</h4>
+        <p>${item.source} | ${new Date(item.datetime * 1000).toLocaleDateString()}</p>
+        <a href="${item.url}" target="_blank">Read more</a>
+      `;
+      newsContainer.appendChild(div);
+    });
+  })
+  .catch((err) => console.error('Failed to load news:', err));
+
+  // search
   const fetchData = (value) => {
     fetch(`/mrkt/search?q=${encodeURIComponent(value)}`, {
       headers: {
@@ -25,9 +46,25 @@ document.addEventListener('DOMContentLoaded', () => {
       searchResultDiv.classList.add('search-result');
       searchResultDiv.textContent = `${result.symbol} - ${result.name}`;
       searchResultDiv.addEventListener('click', () => {
-        alert(`You selected ${result.symbol}`);
         searchInput.value = result.symbol;
         resultsList.innerHTML = '';
+
+        fetch('/mrkt/save-stock', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify({ symbol: result.symbol }),
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error('Failed to save stock');
+            return res.json();
+          })
+          .catch((err) => {
+            console.error(err);
+            alert('Error saving stock.');
+          });
       });
       resultsList.appendChild(searchResultDiv);
     });
@@ -88,5 +125,6 @@ function logout() {
   localStorage.removeItem("token");
   window.location.href = "/LogReg.html";
 }
+
 
 
