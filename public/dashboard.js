@@ -13,8 +13,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const summaryHigh = document.getElementById('summary-high');
   const summaryLow = document.getElementById('summary-low');
   const summaryPrevClose = document.getElementById('summary-prev-close');
+  const appMessage = document.getElementById('app-message');
 
   let stockChartInstance = null;
+  let messageTimeout;
+
+  // display messages
+  const showMessage = (message, type) => {
+    if (messageTimeout) {
+      clearTimeout(messageTimeout);
+    }
+
+    appMessage.textContent = message;
+    appMessage.className = `app-message show ${type}`;
+    messageTimeout = setTimeout(() => {
+      appMessage.classList.remove('show');
+      setTimeout(() => {
+        appMessage.className = 'app-message';
+        appMessage.textContent = '';
+      }, 300);
+    }, 3000);
+  };
+
 
   // Fetch and display chart data
   const fetchAndDisplayChart = async (symbol, range = 1) => {
@@ -210,6 +230,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // delete Stock
+  window.deleteStock = async (event, symbol) => {
+    event.stopPropagation();
+
+    try {
+      const res = await fetch('/mrkt/delete-stock', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({symbol: symbol}),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to delete stock');
+      }
+
+      const data = await res.json();
+      showMessage(data.message, 'success');
+      fetchAndDisplayUserStocks();
+      if (chartStockTicker.textContent === symbol) {
+        stockChartSection.style.display = 'none';
+        if (stockChartInstance) {
+          stockChartInstance.destroy();
+          stockChartInstance = null;
+        }
+      }
+
+    } catch (error) {
+      console.error('Error deleting stock:', error);
+      showMessage(`Error deleting stock: ${error.message}`, 'error');
+    }
+  };
+
+
   const fetchAndDisplayUserStocks = () => {
     fetch('/mrkt/userStocks', {
       headers: {
@@ -245,7 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const priceChangeClass =
                 item.priceChange >= 0 ? 'positive' : 'negative';
-
             div.innerHTML = `
           <div class="mover-info">
             <span class="mover-ticker">${item.symbol}</span>
@@ -259,6 +315,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.percentChange ? item.percentChange.toFixed(2) : 'N/A'}%)
             </p>
           </div>
+          <button class="delete-button" onclick="deleteStock(event, '${
+                item.symbol}')">
+            <img src="imgs/del.png" class="del-Logo" alt="Delete">
+          </button>
         `;
             moversGrid.append(div);
             div.addEventListener('click', () => {
@@ -337,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then((res) => {
               if (!res.ok) {
                 if (res.status === 409) {
-                  alert('Stock is already in your portfolio.');
+                  showMessage('Stock is already in your portfolio.', 'error');
                 } else {
                   throw new Error('Failed to save stock');
                 }
@@ -350,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch((err) => {
               console.error(err);
-              alert('Error saving stock.');
+              showMessage(`Error saving stock: ${err.message}`, 'error');
             });
       });
       resultsList.appendChild(searchResultDiv);

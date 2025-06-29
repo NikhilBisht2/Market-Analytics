@@ -62,7 +62,7 @@ ul {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.card:hover {
+.mover-card:hover {
   background-color: transparent;
   cursor: pointer;
 }
@@ -252,11 +252,14 @@ ul {
 .chart-container {
   position: relative;
   width: 100%;
-  height: 250px;
+  height: 300px;
   margin-bottom: 20px;
   background-color: #f8f8fb;
   border-radius: 8px;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .stock-chart-placeholder {
@@ -317,7 +320,10 @@ ul {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   height: 130px;
+  position: relative;
+  padding-right: 15px;
 }
 
 .mover-info {
@@ -677,15 +683,15 @@ footer {
   text-decoration: underline;
 }
 
-/* Add these new styles or adjust existing ones */
+
 
 .stock-chart-section {
   margin-bottom: 40px;
-  /* Space below the chart section */
+
 }
 
 .stock-details-section .card {
-  /* This might be an existing style, ensure it applies */
+
   margin-bottom: 40px;
 }
 
@@ -770,24 +776,14 @@ footer {
   position: relative;
   width: 100%;
   height: 300px;
-  /* Increased height for better chart visibility */
   margin-bottom: 20px;
   background-color: #f8f8fb;
   border-radius: 8px;
   overflow: hidden;
   display: flex;
-  /* To center the canvas if needed */
   justify-content: center;
   align-items: center;
 }
-
-/* Remove or comment out .stock-chart-placeholder as we'll use actual chart */
-/* .stock-chart-placeholder {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-} */
 
 .stock-day-summary {
   display: grid;
@@ -809,4 +805,61 @@ footer {
   font-size: 18px;
   font-weight: 600;
   color: var(--text-dark);
+}
+
+.del-Logo {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+}
+
+.delete-button {
+  background: none;
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.delete-button:hover {
+  background-color: #ffebeb;
+  border-color: var(--negative-red);
+}
+
+.app-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 25px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+  z-index: 2000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  min-width: 250px;
+  text-align: center;
+}
+
+.app-message.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.app-message.success {
+  background-color: var(--positive-green);
+}
+
+.app-message.error {
+  background-color: var(--negative-red);
 }

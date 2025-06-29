@@ -17,7 +17,7 @@ const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
 const router = express.Router();
 const SECRET_KEY = process.env.JWT_SECRET;
 
-// Middleware verify JWT
+// Middleware verify JWT and extract user ID
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(' ')[1];
@@ -118,7 +118,43 @@ router.post('/save-stock', authenticateToken, (req, res) => {
   }
 });
 
-// fetch data from Alpha Vantage
+// Delete user stock
+router.delete('/delete-stock', authenticateToken, (req, res) => {
+  const userId = req.userId;
+  const {symbol} = req.body;
+
+  if (!symbol) {
+    return res.status(400).json({error: 'Missing stock symbol to delete.'});
+  }
+
+  try {
+    // Check if the stock belongs to the user before deleting
+    const checkStmt = db.prepare(
+        'SELECT COUNT(*) AS count FROM user_stocks WHERE user_id = ? AND stock_symbol = ?');
+    const result = checkStmt.get(userId, symbol);
+
+    if (result.count === 0) {
+      return res.status(404).json(
+          {error: 'Stock not found in your portfolio.'});
+    }
+
+    const deleteStmt = db.prepare(
+        'DELETE FROM user_stocks WHERE user_id = ? AND stock_symbol = ?');
+    const info = deleteStmt.run(userId, symbol);
+
+    if (info.changes > 0) {
+      res.status(200).json({message: 'Stock deleted successfully.'});
+    } else {
+      res.status(500).json({error: 'Failed to delete stock.'});
+    }
+  } catch (err) {
+    console.error('Database error deleting stock:', err);
+    res.status(500).json({error: 'Failed to delete stock.'});
+  }
+});
+
+
+// Helper function to fetch data from Alpha Vantage
 const fetchAlphaVantageData = (symbol, interval, outputsize) => {
   return new Promise((resolve, reject) => {
     const url =
