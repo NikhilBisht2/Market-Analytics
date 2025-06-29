@@ -11,7 +11,7 @@ const finnhubClient = new finnhub.DefaultApi();
 const router = express.Router();
 const SECRET_KEY = process.env.JWT_SECRET;
 
-// Middleware to verify JWT and extract user ID
+// Middleware verify JWT and extract user ID
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(' ')[1];
@@ -41,12 +41,11 @@ router.get('/userStocks', authenticateToken, async (req, res) => {
         finnhubClient.quote(symbol, (err, data) => {
           if (err) {
             console.error(`Finnhub quote error for ${symbol}:`, err);
-            resolve(null); // Resolve with null to not block other stocks
+            resolve(null); 
           } else {
-            // Fetch the full name of the stock from your DB
             const stockNameStmt = db.prepare('SELECT name FROM stocks WHERE symbol = ?');
             const stockNameResult = stockNameStmt.get(symbol);
-            const stockName = stockNameResult ? stockNameResult.name : symbol; // Fallback to symbol if name not found
+            const stockName = stockNameResult ? stockNameResult.name : symbol; 
 
             resolve({
               symbol: symbol,
@@ -61,7 +60,7 @@ router.get('/userStocks', authenticateToken, async (req, res) => {
     });
 
     const userStocks = await Promise.all(stockInfoPromises);
-    res.json(userStocks.filter(stock => stock !== null)); // Filter out any failed fetches
+    res.json(userStocks.filter(stock => stock !== null)); 
   } catch (err) {
     console.error('Database or Finnhub error fetching user stocks:', err);
     res.status(500).json({ error: 'Failed to fetch user stocks' });
@@ -95,7 +94,7 @@ router.get('/news', (req, res) => {
 });
 
 // save user stocks
-router.post('/save-stock', authenticateToken, (req, res) => { // Added authenticateToken here
+router.post('/save-stock', authenticateToken, (req, res) => { 
   const userId = req.userId;
   const { symbol } = req.body;
 

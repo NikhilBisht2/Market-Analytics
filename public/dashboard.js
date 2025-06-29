@@ -2,9 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('search-box');
   const resultsList = document.getElementById('results-list');
   const logoutDiv = document.getElementById("logout");
-  const moversGrid = document.querySelector(".movers-grid"); // Get the parent for stock cards
+  const moversGrid = document.querySelector(".movers-grid"); 
 
-  // Function to fetch and display user stocks
   const fetchAndDisplayUserStocks = () => {
     fetch('/mrkt/userStocks', {
       headers: {
@@ -13,9 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then((res) => {
       if (res.status === 401 || res.status === 403) {
-        // Handle unauthorized/forbidden access, e.g., redirect to login
         console.error("Authentication failed for user stocks. Redirecting to login.");
-        logout(); // Or redirect to login page
+        logout(); 
         return;
       }
       if (!res.ok) {
@@ -24,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return res.json();
     })
     .then((stockInfo) => {
-      moversGrid.innerHTML = ''; // Clear existing cards
+      moversGrid.innerHTML = ''; 
 
       if (stockInfo.length === 0) {
         moversGrid.innerHTML = '<p class="no-stocks-message">You have no stocks saved. Search and add some!</p>';
@@ -32,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       stockInfo.forEach((item) => {
-        if (!item) return; // Skip if Finnhub failed for this stock
+        if (!item) return; 
 
         const div = document.createElement('div');
         div.className = 'card mover-card';
@@ -57,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch((err) => console.error('Failed to load user stock cards:', err));
   };
 
-  // Initial fetch of user stocks when the page loads
   fetchAndDisplayUserStocks();
 
   // fetch news
@@ -84,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const fetchData = (value) => {
     fetch(`/mrkt/search?q=${encodeURIComponent(value)}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`, // Ensure search also has token
+        Authorization: `Bearer ${localStorage.getItem('token')}`, 
       },
     })
       .then((response) => response.json())
@@ -124,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
           .then((res) => {
             if (!res.ok) {
-              if (res.status === 409) { // Assuming 409 for duplicate entry (UNIQUE constraint)
+              if (res.status === 409) { 
                 alert('Stock is already in your portfolio.');
               } else {
                 throw new Error('Failed to save stock');
@@ -133,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return res.json();
           })
           .then(() => {
-            // After successfully saving a stock, refresh the user's stock list
             fetchAndDisplayUserStocks(); 
           })
           .catch((err) => {
