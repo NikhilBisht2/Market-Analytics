@@ -11,6 +11,63 @@ const finnhubClient = new finnhub.DefaultApi();
 const router = express.Router();
 const SECRET_KEY = process.env.JWT_SECRET;
 
+// Middleware to verify JWT and extract user ID
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.split(' ')[1];
+
+  if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    req.userId = decoded.id;
+    next();
+  } catch (err) {
+    return res.status(403).json({ error: 'Forbidden: Invalid token' });
+  }
+};
+
+// get user stock-info
+router.get('/userStocks', authenticateToken, async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const stmt = db.prepare('SELECT stock_symbol FROM user_stocks WHERE user_id = ?');
+    const userStockSymbols = stmt.all(userId);
+
+    const stockInfoPromises = userStockSymbols.map(async (row) => {
+      const symbol = row.stock_symbol;
+      return new Promise((resolve, reject) => {
+        finnhubClient.quote(symbol, (err, data) => {
+          if (err) {
+            console.error(`Finnhub quote error for ${symbol}:`, err);
+            resolve(null); // Resolve with null to not block other stocks
+          } else {
+            // Fetch the full name of the stock from your DB
+            const stockNameStmt = db.prepare('SELECT name FROM stocks WHERE symbol = ?');
+            const stockNameResult = stockNameStmt.get(symbol);
+            const stockName = stockNameResult ? stockNameResult.name : symbol; // Fallback to symbol if name not found
+
+            resolve({
+              symbol: symbol,
+              name: stockName,
+              currentPrice: data.c,
+              priceChange: data.d,
+              percentChange: data.dp,
+            });
+          }
+        });
+      });
+    });
+
+    const userStocks = await Promise.all(stockInfoPromises);
+    res.json(userStocks.filter(stock => stock !== null)); // Filter out any failed fetches
+  } catch (err) {
+    console.error('Database or Finnhub error fetching user stocks:', err);
+    res.status(500).json({ error: 'Failed to fetch user stocks' });
+  }
+});
+
 // Search stocks 
 router.get('/search', (req, res) => {
   const query = req.query.q;
@@ -37,21 +94,9 @@ router.get('/news', (req, res) => {
   });
 });
 
-// user stocks
-router.post('/save-stock', (req, res) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.split(' ')[1];
-
-  if (!token) return res.status(401).json({ error: 'Unauthorized' });
-
-  let userId;
-  try {
-    const decoded = jwt.verify(token, SECRET_KEY); 
-    userId = decoded.id;
-  } catch (err) {
-    return res.status(403).json({ error: 'Invalid token' });
-  }
-
+// save user stocks
+router.post('/save-stock', authenticateToken, (req, res) => { // Added authenticateToken here
+  const userId = req.userId;
   const { symbol } = req.body;
 
   try {
