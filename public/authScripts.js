@@ -6,28 +6,31 @@ async function regAuth() {
   const password = pwd.value.trim();
 
   if (!username || !password) {
-    document.getElementById('alert').innerHTML = "<p>Empty Fields</p>";
+    document.getElementById('alert').innerHTML = '<p>Empty Fields</p>';
     return;
   }
 
   try {
-      const registerRes = await fetch('/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
+    const registerRes = await fetch('/auth/register', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username, password})
+    });
 
-      const data = await registerRes.json();
-      if (registerRes.ok) {
-          document.getElementById('alert').innerHTML = `<p>${data.message || 'Registration Successful!'}</p>`;
-          usr.value = '';
-          pwd.value = '';
-      } else {
-          document.getElementById('alert').innerHTML = `<p>${data.message || 'Registration Failed'}</p>`;
-      }
+    const data = await registerRes.json();
+    if (registerRes.ok) {
+      document.getElementById('alert').innerHTML =
+          `<p>${data.message || 'Registration Successful!'}</p>`;
+      usr.value = '';
+      pwd.value = '';
+    } else {
+      document.getElementById('alert').innerHTML =
+          `<p>${data.message || 'Registration Failed'}</p>`;
+    }
   } catch (error) {
     console.error('Registration error:', error);
-    document.getElementById('alert').innerHTML = "<p>Registration failed. Please try again later.</p>";
+    document.getElementById('alert').innerHTML =
+        '<p>Registration failed. Please try again later.</p>';
   }
 }
 
@@ -36,15 +39,15 @@ async function logAuth() {
   const password = pwd.value.trim();
 
   if (!username || !password) {
-    document.getElementById('alert').innerHTML = "<p>Empty Fields</p>";
+    document.getElementById('alert').innerHTML = '<p>Empty Fields</p>';
     return;
   }
 
   try {
     const loginRes = await fetch('/auth/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username, password})
     });
 
     const data = await loginRes.json();
@@ -53,13 +56,12 @@ async function logAuth() {
       window.location.href = '/index.html';
       return;
     } else {
-      document.getElementById('alert').innerHTML = `<p>${data.message || 'Login Failed. Invalid credentials.'}</p>`;
+      document.getElementById('alert').innerHTML =
+          `<p>${data.message || 'Login Failed. Invalid credentials.'}</p>`;
     }
   } catch (error) {
     console.error('Authentication error:', error);
-    document.getElementById('alert').innerHTML = "<p>Login failed. Please try again later.</p>";
+    document.getElementById('alert').innerHTML =
+        '<p>Login failed. Please try again later.</p>';
   }
 }
-
-
-

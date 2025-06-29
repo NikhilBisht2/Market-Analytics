@@ -1,80 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hyzen - Market Overview</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <header class="navbar">
-      <div class="navbar-content">
-        <img src="imgs/HLogo.png" class="logo" alt="MarketPulse Logo" />
-        <div class="search-container stock-search">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hyzen - Market Overview</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="navbar-content">
+      <img src="imgs/HLogo.png" class="logo" alt="MarketPulse Logo" />
+      <div class="search-container stock-search">
         <div class="search">
-          <input
-            type="text"
-            id="search-box"
-            class="search-input"
-            placeholder="Search stocks..."
-            autocomplete="off"
-          />
+          <input type="text" id="search-box" class="search-input" placeholder="Search stocks..." autocomplete="off" />
           <button class="search-button">
             <i class="fas fa-search"></i>
           </button>
         </div>
         <div id="results-list" class="result-list"></div>
       </div>
-        <div class="profile-logo">
-          <button class="profile-button"><img class="profile-img" src="imgs/profileLogo.png"
-            onclick="profile()"></button>
-            <div class="logout-button" id="logout"></div>
-        </div>
+      <div class="profile-logo">
+        <button class="profile-button"><img class="profile-img" src="imgs/profileLogo.png" onclick="profile()"></button>
+        <div class="logout-button" id="logout"></div>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main class="container content-area">
-      <section class="section-header">
-        <h1>Top News Today</h1>
-      </section>
-      <section class="market-indices">
-        <div class="news-today" id="news-today">News Here</div>
-      </section>
-      <section class="your-stock-section">
-        <h2>Your Stocks</h2>
-        <div class="movers-grid">
+  <main class="container content-area">
+    <section class="section-header">
+      <h1>Top News Today</h1>
+    </section>
+    <section class="market-indices">
+      <div class="news-today" id="news-today">News Here</div>
+    </section>
+
+    <section id="stock-chart-section" class="stock-chart-section" style="display: none;">
+      <div class="card">
+        <div class="stock-header">
+          <div class="stock-info">
+            <span id="chart-stock-ticker" class="stock-ticker"></span>
+            <span id="chart-stock-name" class="stock-name"></span>
           </div>
-      </section>
-    </main>
+          <div class="stock-price">
+            <p id="chart-current-price" class="current-price"></p>
+            <p id="chart-price-change" class="price-change"></p>
+          </div>
+        </div>
+        <div class="time-filters" id="time-filters">
+          <button class="filter-btn active" data-range="1">1D</button>
+          <button class="filter-btn" data-range="7">1W</button>
+          <button class="filter-btn" data-range="30">1M</button>
+          <button class="filter-btn" data-range="90">3M</button>
+          <button class="filter-btn" data-range="180">6M</button>
+          <button class="filter-btn" data-range="365">1Y</button>
+        </div>
+        <div class="chart-container">
+          <canvas id="stockChart"></canvas>
+        </div>
+        <div class="stock-day-summary">
+          <div class="summary-item">
+            <span class="label">Open</span>
+            <span id="summary-open" class="value">N/A</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">High</span>
+            <span id="summary-high" class="value">N/A</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Low</span>
+            <span id="summary-low" class="value">N/A</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Prev. Close</span>
+            <span id="summary-prev-close" class="value">N/A</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <footer>
-      <div class="container footer-content">
-        <div class="footer-column">
-          <h3>Hyzen</h3>
-          <p>
-            Real-time market data and insights to help you make informed
-            investment decisions.
-          </p>
-        </div>
+    <section class="your-stock-section">
+      <h2>Your Stocks</h2>
+      <div class="movers-grid">
       </div>
-      <div class="container copyright-social">
-        <p>&copy; 2023 Hyzen. All rights reserved.</p>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-github"></i></a>
-        </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <div class="footer-column">
+        <h3>Hyzen</h3>
+        <p>
+          Real-time market data and insights to help you make informed
+          investment decisions.
+        </p>
       </div>
-    </footer>
-    <script src="dashboard.js"></script>
-  </body>
+    </div>
+    <div class="container copyright-social">
+      <p>&copy; 2023 Hyzen. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+  </footer>
+  <script src="dashboard.js"></script>
+</body>
+
 </html>
